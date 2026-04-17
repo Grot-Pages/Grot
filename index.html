@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Purikill 이벤트 배너</title>
+  <style>
+    /* 폰트 (Pretendard - 한국어 깔끔) */
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* 배너 전체 컨테이너 - 860px는 스마트스토어 상세페이지 기본 폭 */
+    .banner {
+      width: 860px;
+      padding: 60px 0 80px 0;
+      background: #ffffff;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    /* Purikill 파란 배지 */
+    .brand-badge {
+      display: inline-block;
+      background: #2D6BFF;
+      color: #ffffff;
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      padding: 14px 44px;
+      border-radius: 14px;
+      margin-bottom: 32px;
+    }
+
+    /* 메인 헤드라인 */
+    .headline {
+      font-size: 48px;
+      font-weight: 800;
+      color: #111111;
+      letter-spacing: -1.5px;
+      margin: 0 0 48px 0;
+    }
+
+    /* 통계 바 (3 컬럼) */
+    .stats {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #F5F6F8;
+      padding: 24px 40px;
+      margin: 0 40px 80px 40px;
+      border-radius: 4px;
+    }
+
+    .stat-item {
+      flex: 1;
+      color: #2D6BFF;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 44px;
+      background: #C9D2DB;
+    }
+
+    /* 검은 박스 (이벤트 기간) */
+    .event-box {
+      background: #111111;
+      color: #ffffff;
+      margin: 0 40px;
+      padding: 40px 20px;
+      border-radius: 12px;
+    }
+
+    .event-label {
+      font-size: 22px;
+      font-weight: 500;
+      color: #ffffff;
+      margin-bottom: 14px;
+      letter-spacing: -0.3px;
+    }
+
+    .event-label::before { content: '- '; }
+    .event-label::after  { content: ' -'; }
+
+    .event-date {
+      font-size: 44px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="brand-badge">Purikill</div>
+    <h1 class="headline">누적 10,000 가구 돌파 감사제</h1>
+
+    <div class="stats">
+      <div class="stat-item">퓨리킬 경필터<br/>공기청정기</div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">전체 리뷰수<br/>2,900개</div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">고객만족도<br/>98%</div>
+    </div>
+
+    <div class="event-box">
+      <div class="event-label">이벤트 기간</div>
+      <div class="event-date" id="eventDate">계산 중...</div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * 이벤트 기간 자동 계산
+     * - 종료일: 오늘
+     * - 시작일: 오늘로부터 7일 전
+     * 형식: "M월 D일 ~ M월 D일"
+     */
+    (function () {
+      const today = new Date();
+      const startDate = new Date();
+      startDate.setDate(today.getDate() - 7);
+
+      const format = (d) => `${d.getMonth() + 1}월 ${d.getDate()}일`;
+
+      document.getElementById('eventDate').textContent =
+        `${format(startDate)} ~ ${format(today)}`;
+    })();
+  </script>
+</body>
+</html>
