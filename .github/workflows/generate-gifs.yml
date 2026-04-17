@@ -1,0 +1,44 @@
+name: Generate GIFs Daily
+
+on:
+  schedule:
+    # 매일 한국시간 00:05 실행 (UTC 15:05)
+    - cron: '5 15 * * *'
+  workflow_dispatch:
+    # 수동 실행도 가능
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install puppeteer gif-encoder-2 png-js
+
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev
+
+      - name: Generate GIFs
+        run: node scripts/generate-gifs.js
+
+      - name: Commit and push GIFs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index-1.gif index-3.gif
+          git diff --staged --quiet || git commit -m "Update GIFs - $(date +'%Y-%m-%d')"
+          git push
