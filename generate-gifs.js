@@ -25,7 +25,7 @@ const PNG_PAGES = [
   {
     url: 'https://grot-pages.github.io/Grot/index-4',
     output: 'index-4.png',
-    width: 400,
+    width: 600,
     selector: '.notice'
   }
 ];
