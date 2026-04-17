@@ -69,7 +69,7 @@ async function generateGif(page, config) {
   encoder.finish();
 
   // GIF 저장
-  const outputPath = path.join(__dirname, '..', config.output);
+  const outputPath = path.join(__dirname, config.output);
   fs.writeFileSync(outputPath, encoder.out.getData());
   console.log(`Saved: ${outputPath} (${height}px height, ${TOTAL_FRAMES} frames)`);
 }
