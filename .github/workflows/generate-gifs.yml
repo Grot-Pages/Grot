@@ -34,6 +34,8 @@ jobs:
 
       - name: Generate GIFs
         run: node generate-gifs.js
+        env:
+          TZ: Asia/Seoul
 
       - name: Commit and push GIFs
         run: |
