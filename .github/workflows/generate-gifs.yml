@@ -20,10 +20,12 @@ jobs:
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libgbm-dev
       - name: Generate GIFs
-        run: node generate-gifs.js TZ Asia/Seoul
+        run: node generate-gifs.js
+        env:
+          TZ: Asia/Seoul
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add nasal-event.gif elderberry-event.gif elderberry-notice.png index-1.gif index-3.gif index-4.png
+          git add nasal-event.gif elderberry-event.gif index-1.gif index-3.gif index-4.png
           git diff --cached --quiet || (git commit -m "Update generated images - $(date +'%Y-%m-%d')" && git push)
