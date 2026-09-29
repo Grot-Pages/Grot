@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: npm install puppeteer gif-encoder-2 pngjs
       - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y libgbm-dev
+        run: sudo apt-get update && sudo apt-get install -y libgbm-dev fonts-noto-cjk
       - name: Generate GIFs
         run: node generate-gifs.js
         env:
