@@ -10,6 +10,7 @@ const GIF_PAGES = [
   { url: 'https://grot-pages.github.io/Grot/index-3', output: 'index-3.gif', width: 860, selector: '.notice' }
 ];
 const PNG_PAGES = [
+  { url: 'https://grot-pages.github.io/Grot/elderberry-deadline', output: 'elderberry-deadline.png', width: 848, selector: '.notice' },
   { url: 'https://grot-pages.github.io/Grot/elderberry-notice', output: 'elderberry-notice.png', width: 848, selector: '.notice' },
   { url: 'https://grot-pages.github.io/Grot/index-4', output: 'index-4.png', width: 600, selector: '.notice' }
 ];
