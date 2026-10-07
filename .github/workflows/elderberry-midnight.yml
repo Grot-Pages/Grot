@@ -1,0 +1,50 @@
+name: Elderberry Midnight Refresh
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: elderberry-midnight-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: |
+          npm install puppeteer gif-encoder-2 pngjs
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev fonts-noto-cjk
+      - name: Generate only elderberry images
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          let code = fs.readFileSync('generate-gifs.js', 'utf8');
+          for (const name of ['GIF_PAGES', 'PNG_PAGES']) {
+            // Match the existing generator loop, and fail closed if its format changes.
+            const needle = 'for(const c of ' + name + ')';
+            if (code.split(needle).length !== 2) throw new Error('Unexpected loop: ' + name);
+            code = code.replace(needle, 'for(const c of ' + name + '.filter(c => c.output.startsWith("elderberry-")))');
+          }
+          const page = 'const p=await b.newPage();';
+          if (!code.includes(page)) throw new Error('Unexpected browser setup');
+          code = code.replace(page, page + 'await p.emulateTimezone("Asia/Seoul");');
+          fs.writeFileSync('generate-elderberry.test.cjs', code);
+          NODE
+          node generate-elderberry.test.cjs
+      - name: Commit only elderberry images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add elderberry-event.gif elderberry-deadline.png elderberry-notice.png
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Refresh elderberry images - $(date +'%Y-%m-%d %H:%M KST')"
+          git pull --rebase --autostash origin main
+          git push origin HEAD:main
